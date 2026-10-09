@@ -1,0 +1,106 @@
+# 3d-model.mtl — material library for public/3d-model.obj (SketchUp "_auto_*" export)
+# Reconstructed so the dam renders with a coherent concrete / steel / rock palette.
+
+newmtl _auto_
+Kd 0.74 0.75 0.77
+Ka 0.74 0.75 0.77
+Ks 0.25 0.25 0.25
+Ns 24
+d 1
+illum 2
+
+newmtl _auto_1
+Kd 0.55 0.52 0.48
+Ka 0.55 0.52 0.48
+Ks 0.15 0.15 0.15
+Ns 12
+d 1
+illum 2
+
+newmtl _auto_2
+Kd 0.38 0.43 0.50
+Ka 0.38 0.43 0.50
+Ks 0.55 0.55 0.55
+Ns 96
+d 1
+illum 2
+
+newmtl _auto_3
+Kd 0.50 0.46 0.41
+Ka 0.50 0.46 0.41
+Ks 0.12 0.12 0.12
+Ns 8
+d 1
+illum 2
+
+newmtl _auto_4
+Kd 0.58 0.60 0.61
+Ka 0.58 0.60 0.61
+Ks 0.18 0.18 0.18
+Ns 20
+d 1
+illum 2
+
+newmtl _auto_5
+Kd 0.62 0.55 0.49
+Ka 0.62 0.55 0.49
+Ks 0.12 0.12 0.12
+Ns 10
+d 1
+illum 2
+
+newmtl _auto_6
+Kd 0.42 0.40 0.38
+Ka 0.42 0.40 0.38
+Ks 0.2 0.2 0.2
+Ns 16
+d 1
+illum 2
+
+newmtl _auto_7
+Kd 0.66 0.70 0.74
+Ka 0.66 0.70 0.74
+Ks 0.22 0.22 0.22
+Ns 28
+d 1
+illum 2
+
+newmtl _auto_8
+Kd 0.60 0.64 0.69
+Ka 0.60 0.64 0.69
+Ks 0.2 0.2 0.2
+Ns 24
+d 1
+illum 2
+
+newmtl _auto_9
+Kd 0.52 0.57 0.63
+Ka 0.52 0.57 0.63
+Ks 0.25 0.25 0.25
+Ns 40
+d 1
+illum 2
+
+newmtl _auto_10
+Kd 0.70 0.63 0.47
+Ka 0.70 0.63 0.47
+Ks 0.4 0.4 0.4
+Ns 64
+d 1
+illum 2
+
+newmtl _auto_11
+Kd 0.37 0.43 0.51
+Ka 0.37 0.43 0.51
+Ks 0.6 0.6 0.6
+Ns 110
+d 1
+illum 2
+
+newmtl _auto_12
+Kd 0.30 0.33 0.38
+Ka 0.30 0.33 0.38
+Ks 0.4 0.4 0.4
+Ns 48
+d 1
+illum 2

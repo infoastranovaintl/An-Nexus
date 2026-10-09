@@ -1,0 +1,686 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Caveat:wght@400;500;600;700&display=swap');
+@import 'leaflet/dist/leaflet.css';
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme {
+  /* ONE ACCENT — brand blue (shared with public-pages theme) */
+  --color-ac: #006194;
+  --color-ac2: #1e88e5;
+  --color-nb: #004b78;
+  --color-pu: #006194;
+
+  /* brand aliases (public-pages theme parity) */
+  --color-primary: #006194;
+  --color-primary-dark: #004b78;
+  --color-secondary: #006194;
+  --color-accent: #1565c0;
+  --color-accent-dark: #0d47a1;
+  --color-light-accent: #1e88e5;
+  --color-dark: #1a1a1a;
+  --color-light: #e5eeff;
+
+  /* functional states */
+  --color-gn: #16a34a;
+  --color-am: #d97706;
+  --color-rd: #dc2626;
+
+  /* light surfaces */
+  --color-bg: #f4f5f7;
+  --color-s0: #ffffff;
+  --color-s1: #ffffff;
+  --color-s2: #f6f7f9;
+  --color-s3: #eef0f3;
+  --color-s4: #e5e8ec;
+
+  /* ink */
+  --color-tx: #1b2432;
+  --color-tx2: #566072;
+  --color-tx3: #98a1b0;
+
+  /* same font as public-pages */
+  --font-sans: 'Poppins', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Poppins', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: 'Poppins', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+
+  --animate-sys-pulse: sys-pulse 3s ease-in-out infinite;
+  --animate-dot-pulse: dot-pulse 2.4s ease-in-out infinite;
+  --animate-stat-warn: stat-warn 0.9s ease-in-out infinite;
+  --animate-offline-pulse: offline-alert-pulse 2s ease-in-out infinite;
+   --animate-bell-ring: bell-ring 0.8s ease-in-out;
+   --animate-expand-panel: expand-panel 0.3s ease-out forwards;
+   --animate-expand-from-capsule: expand-from-capsule 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+
+@keyframes sys-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  @keyframes bell-ring {
+    0% { transform: rotate(0deg); }
+    10% { transform: rotate(14deg); }
+    20% { transform: rotate(-12deg); }
+    30% { transform: rotate(10deg); }
+    40% { transform: rotate(-8deg); }
+    50% { transform: rotate(6deg); }
+    60% { transform: rotate(-4deg); }
+    70% { transform: rotate(2deg); }
+    80% { transform: rotate(-1deg); }
+    100% { transform: rotate(0deg); }
+  }
+  @keyframes expand-panel {
+    0% { max-height: 0; opacity: 0; transform: translateX(-50%) scale(0.95); }
+    100% { max-height: 500px; opacity: 1; transform: translateX(-50%) scale(1); }
+  }
+  @keyframes expand-from-capsule {
+    0% { opacity: 0; transform: scale(0.3) translateY(-10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes dot-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+  @keyframes stat-warn {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+  @keyframes offline-alert-pulse {
+    0%,
+    100% {
+      background-color: rgba(220, 38, 38, 0.05);
+      border-color: rgba(220, 38, 38, 0.25);
+    }
+    50% {
+      background-color: rgba(220, 38, 38, 0.11);
+      border-color: rgba(220, 38, 38, 0.5);
+    }
+  }
+
+/* ── DARK MODE ── (toggled in Settings; applied via [data-theme='dark']) ── */
+[data-theme='dark'] {
+  /* surfaces */
+  --color-bg: #0b0f14;
+  --color-s0: #10151c;
+  --color-s1: #131a22;
+  --color-s2: #1a222d;
+  --color-s3: #212b38;
+  --color-s4: #2a3645;
+
+  /* ink */
+  --color-tx: #e8edf4;
+  --color-tx2: #9fadbf;
+  --color-tx3: #5f6e82;
+
+  /* accent — brand blue, brighter for dark contrast */
+  --color-ac: #1e88e5;
+  --color-ac2: #4da6ea;
+  --color-nb: #3f91d4;
+  --color-pu: #1e88e5;
+
+  --color-primary: #1e88e5;
+  --color-primary-dark: #004b78;
+  --color-secondary: #1e88e5;
+  --color-accent: #1565c0;
+  --color-accent-dark: #0d47a1;
+  --color-light-accent: #1e88e5;
+  --color-dark: #1a1a1a;
+  --color-light: #e5eeff;
+
+  color-scheme: dark;
+}
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+@supports (height: 100dvh) {
+  html,
+  body,
+  #root {
+    height: 100dvh;
+  }
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-tx);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── GLOBAL SCROLLBAR — hidden indicator, scrolling still works ── */
+html, body, #root {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: transparent;
+}
+
+/* ── SCROLLABLE PANELS ── */
+.nexus-scroll {
+  overscroll-behavior: contain;
+}
+
+/* ── CCTV CAMERA GRID ──
+   Column count is computed at runtime by useCameraGridFit (gridFit.ts) and
+   applied as an inline style; the grid simply fills its container and splits
+   the height so every tile fits one screen without scrolling. */
+.cctv-grid {
+  display: grid;
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 10px;
+  height: 100%;
+}
+
+/* ── CCTV MONITOR FX ── */
+.cctv-scanlines {
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.03) 0 1px, transparent 1px 3px);
+}
+.cctv-vignette {
+  background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.15) 100%);
+}
+.cctv-scanbar {
+  top: -30%;
+  height: 26%;
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.045), transparent);
+  animation: cctv-scanbar 9s linear infinite;
+}
+@keyframes cctv-scanbar {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(420%);
+  }
+}
+.cctv-static {
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 4px);
+  animation: cctv-static 0.35s steps(3) infinite;
+}
+@keyframes cctv-static {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 4px 7px;
+  }
+  100% {
+    background-position: -3px 5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cctv-scanbar,
+  .cctv-static {
+    animation: none;
+  }
+}
+
+/* thin vertical text for drawer tabs */
+.v-tab-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+/* ── DROPDOWN ── */
+.dd-menu {
+  --dd-radius: 10px;
+  --dd-pad: 4px;
+  --dd-item-radius: 6px;
+  --dd-border: rgba(152, 161, 176, 0.22);
+  --dd-bg: var(--color-s1);
+  --dd-text: var(--color-tx2);
+  --dd-text-hover: var(--color-tx);
+  --dd-bg-hover: var(--color-s3);
+  --dd-bg-active: color-mix(in srgb, var(--color-ac) 7%, transparent);
+  --dd-text-active: var(--color-ac);
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 3000;
+  min-width: 148px;
+  max-width: min(240px, calc(100vw - 24px));
+  padding: var(--dd-pad);
+  border: 1px solid var(--dd-border);
+  border-radius: var(--dd-radius);
+  background: var(--dd-bg);
+  box-shadow:
+    0 1px 2px rgba(16, 24, 40, 0.04),
+    0 12px 32px rgba(16, 24, 40, 0.12),
+    0 0 0 1px rgba(0, 97, 148, 0.05);
+  transform-origin: top left;
+  font: inherit;
+  animation: dd-in 0.16s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+@keyframes dd-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.dd-head {
+  padding: 4px 8px 3px;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-tx3);
+}
+.dd-sep {
+  height: 1px;
+  margin: 2px 5px 4px;
+  border: none;
+  background: var(--dd-border);
+}
+.dd-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 5px 8px;
+  border: none;
+  border-radius: var(--dd-item-radius);
+  background: transparent;
+  font: inherit;
+  font-size: 0.63rem;
+  font-weight: 500;
+  color: var(--dd-text);
+  cursor: pointer;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.12s ease,
+    color 0.12s ease;
+}
+.dd-item:hover,
+.dd-item[data-focus='true'] {
+  background: var(--dd-bg-hover);
+  color: var(--dd-text-hover);
+}
+.dd-item:active {
+  background: var(--color-s4);
+}
+.dd-item:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-ac) 55%, transparent);
+  outline-offset: -2px;
+}
+.dd-item[data-active='true'] {
+  color: var(--dd-text-active);
+  font-weight: 600;
+}
+.dd-item::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E")
+    center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E")
+    center/contain no-repeat;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.dd-item[data-active='true']::after {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dd-menu,
+  .dd-item {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ── TOOLTIPS ──
+   Rendered by <TooltipLayer /> (fixed-position portal, viewport-clamped).
+   Elements opt in via [data-tip] + optional [data-tip-pos] (top|bottom|left|right).
+*/
+
+/* ── MICRO-ANIMATIONS ── */
+.press {
+  transition: transform 0.12s ease;
+}
+.press:active {
+  transform: scale(0.96);
+}
+.rise-in {
+  animation: rise-in 0.4s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── DASHBOARD / TELEMETRY ── */
+/* 3D model placeholder backdrop (isometric-ish floor grid) */
+.grid3d-bg {
+  background-image:
+    linear-gradient(rgba(0, 97, 148, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 97, 148, 0.06) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: center;
+}
+.float-cube {
+  animation: float-cube 4s ease-in-out infinite;
+}
+@keyframes float-cube {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(2deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .float-cube {
+    animation: none;
+  }
+}
+
+/* liquid tank surface wave — prominent flow */
+@keyframes liquid-sway {
+  0% {
+    transform: translateX(-20%) scaleY(1);
+  }
+  50% {
+    transform: translateX(0%) scaleY(1.3);
+  }
+  100% {
+    transform: translateX(20%) scaleY(1);
+  }
+}
+.liquid-wave {
+  animation: liquid-sway 2.5s ease-in-out infinite;
+  transform-origin: center;
+}
+.liquid-wave-2 {
+  animation: liquid-sway 4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* water sloshes when a new reading arrives */
+.tank-slosh {
+  animation: tank-slosh 1.15s ease-out;
+}
+@keyframes tank-slosh {
+  0% {
+    transform: translateX(0) skewX(0deg);
+  }
+  25% {
+    transform: translateX(2.5%) skewX(2.5deg);
+  }
+  50% {
+    transform: translateX(-1.8%) skewX(-1.8deg);
+  }
+  75% {
+    transform: translateX(1.2%) skewX(1deg);
+  }
+  100% {
+    transform: translateX(0) skewX(0deg);
+  }
+}
+
+/* gentle surface swell */
+.tank-bob {
+  animation: tank-bob 3.2s ease-in-out infinite;
+}
+@keyframes tank-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2.5px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tank-slosh,
+  .tank-bob {
+    animation: none;
+  }
+}
+
+/* glossy wet-paint-style light sweep across the tank surface */
+.tank-sheen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 40%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.08) 60%,
+    transparent 100%
+  );
+  animation: tank-sheen 7s ease-in-out infinite;
+}
+@keyframes tank-sheen {
+  0%,
+  55% {
+    transform: translateX(-150%);
+  }
+  80%,
+  100% {
+    transform: translateX(340%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tank-sheen {
+    animation: none;
+  }
+}
+
+/* distance sonar target blip pulse */
+.dist-blink {
+  animation: dist-blink 1.6s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+@keyframes dist-blink {
+  0%,
+  100% {
+    r: 5;
+    opacity: 0.95;
+  }
+  50% {
+    r: 7;
+    opacity: 0.6;
+  }
+}
+
+/* water tank surface wave drift */
+.wt-wave {
+  animation: wt-wave 1.5s ease-in-out alternate infinite;
+}
+@keyframes wt-wave {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-1.2px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dist-blink,
+  .wt-wave {
+    animation: none;
+  }
+}
+
+/* live traffic bars */
+@keyframes wave-bar {
+  0%,
+  100% {
+    transform: scaleY(0.25);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+.wave-bar {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: wave-bar 1.5s ease-in-out infinite;
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes popup-countdown {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+/* ── Leaflet base ── */
+.leaflet-container {
+  background: var(--color-s3) !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+.leaflet-tile-pane {
+  z-index: 1;
+}
+.leaflet-marker-pane {
+  z-index: 2;
+}
+.leaflet-popup-pane {
+  z-index: 3;
+}
+
+/* ── Leaflet popup redesign ── */
+.leaflet-popup-content-wrapper {
+  border-radius: 16px !important;
+  border: 2px solid rgba(0, 97, 148, 0.15) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+  padding: 0 !important;
+  font-family: 'Poppins', sans-serif !important;
+  background: #ffffff !important;
+  overflow: hidden;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  padding: 12px 14px !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  color: #1b2432 !important;
+}
+
+.leaflet-popup-content a {
+  color: #006194 !important;
+  font-weight: 600 !important;
+}
+
+.leaflet-popup-tip {
+  background: #ffffff !important;
+  border: 2px solid rgba(0, 97, 148, 0.15) !important;
+  box-shadow: none !important;
+}
+
+.leaflet-popup-close-button {
+  color: #94a3b8 !important;
+  font-size: 18px !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
+  transition: all 0.15s ease !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: #dc2626 !important;
+  background: rgba(220, 38, 38, 0.08) !important;
+}
+
+.animate-expand-from-capsule {
+  animation: expand-from-capsule 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+.animate-expand-panel {
+  animation: expand-panel 0.3s ease-out forwards;
+}
+
+/* ── wind glow animation ──────────────────────────── */
+@keyframes wind-glow {
+  0% {
+    opacity: 0.15;
+    transform: translateX(-15px);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateX(15px);
+  }
+  100% {
+    opacity: 0.15;
+    transform: translateX(-15px);
+  }
+}
+.wind-glow {
+  animation: wind-glow 2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.wind-streak {
+  animation: wind-glow 1.5s ease-in-out infinite;
+  will-change: transform, opacity;
+}
