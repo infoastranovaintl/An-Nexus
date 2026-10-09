@@ -1,4 +1,6 @@
 
+import type { TileProvider } from './tiles'
+
 /**
  * IndexedDB-backed offline tile storage.
  *

@@ -22,7 +22,7 @@ export const MAX_EXPORT_TILES = 50000
 const STORAGE_KEY = 'an-nexus-tiles-offline'
 
 /** No online templates – the app is offline‑only. */
-export const REMOTE_TEMPLATES: Record<TileProvider, string> = {}
+export const REMOTE_TEMPLATES: Partial<Record<TileProvider, string>> = {}
 
 interface TilesState {
   offline: boolean
@@ -101,7 +101,7 @@ export const setTilesOffline = (v: boolean) => useTilesStore.getState().setOffli
  * Generate a tile URL. In online mode, returns the remote URL directly.
  * In offline mode, returns a path under /tiles/ for static file serving.
  */
-export function tileTemplate(provider: TileProvider, offline: boolean = true): string {
+export function tileTemplate(provider: TileProvider, _offline: boolean = true): string {
   // Offline‑only – always serve from local /tiles folder
   return `/tiles/${provider}/{z}/{x}/{y}.png`
 }
